@@ -2,16 +2,27 @@
 module main
 
 import raylib as r
+import os
+import parser as p
+
+const config_path = if os.exists('${os.getenv('HOME')}/.config/uishell/uish.conf') {
+	'${os.getenv('HOME')}/.config/uishell/uish.conf'
+} else {
+	'./uish.conf'
+}
 
 fn main() {
+	zsh_profile := '${os.getenv('HOME')}/.zshrc'
+	println('${zsh_profile}')
+	aliases := go p.parse_shell_aliases(zsh_profile)
+	// println('Parsed aliases: ${aliases}')
 	// Set window dimensions (you can also use r.get_screen_width()/r.get_screen_height() if preferred)
-	screen_width := r.get_screen_width()
-	screen_height := r.get_screen_height()
-
-	window_width := 800
-	window_height := 600
-
-	r.init_window(window_width, window_height, 'ui-shell')
+	config := if os.exists(config_path) {
+		p.init_config(config_path)
+	} else {
+		p.Config{'black', 'enter text:', 800, 600}
+	}
+	r.init_window(config.width, config.height, config.text)
 	r.set_exit_key(int(r.KeyboardKey.key_escape))
 	r.set_target_fps(60)
 
@@ -36,6 +47,13 @@ fn main() {
 				input_text = input_text[..input_text.len - 1]
 			}
 		} else if r.is_key_pressed(int(r.KeyboardKey.key_enter)) {
+			if input_text in aliases.wait() {
+				to_execute := aliases.wait()
+				os.execute(to_execute[input_text])
+			} else {
+				os.execute(input_text)
+			}
+
 			input_text = ''
 		}
 
