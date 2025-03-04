@@ -18,10 +18,15 @@ fn main() {
 	// println('Parsed aliases: ${aliases}')
 	// Set window dimensions (you can also use r.get_screen_width()/r.get_screen_height() if preferred)
 	config := if os.exists(config_path) {
-		p.init_config(config_path)
+		p.init_config(config_path) or {
+			// default config on error
+			eprintln('Error parsing config: ${err}')
+			p.Config{p.BackgroundType.color, 'black', 'enter text:', 800, 600}
+		}
 	} else {
-		p.Config{'black', 'enter text:', 800, 600}
+		p.Config{p.BackgroundType.color, 'black', 'enter text:', 800, 600}
 	}
+	println('Error: ${config}')
 	r.init_window(config.width, config.height, config.text)
 	r.set_exit_key(int(r.KeyboardKey.key_escape))
 	r.set_target_fps(60)
