@@ -5,33 +5,39 @@ import raylib as r
 import os
 import parser as p
 
-const config_path = if os.exists('${os.getenv('HOME')}/.config/uishell/uish.conf') {
-	'${os.getenv('HOME')}/.config/uishell/uish.conf'
+const config_path = if os.exists('${os.getenv('HOME')}/.config/uishell/uish.toml') {
+	'${os.getenv('HOME')}/.config/uishell/uish.toml'
 } else {
-	'./uish.conf'
+	'./uish.toml'
 }
 
 fn main() {
-	zsh_profile := '${os.getenv('HOME')}/.zshrc'
-	println('${zsh_profile}')
-	aliases := go p.parse_shell_aliases(zsh_profile)
-	// println('Parsed aliases: ${aliases}')
-	// Set window dimensions (you can also use r.get_screen_width()/r.get_screen_height() if preferred)
 	config := if os.exists(config_path) {
 		p.init_config(config_path) or {
 			// default config on error
 			eprintln('Error parsing config: ${err}')
-			p.Config{p.BackgroundType.color, 'black', 'enter text:', 800, 600}
+			p.Config{'black', 'enter text:', 800, 600, none}
 		}
 	} else {
-		p.Config{p.BackgroundType.color, 'black', 'enter text:', 800, 600}
+		// default config on not found
+		p.Config{'black', 'enter text:', 800, 600, none}
 	}
-	println('Error: ${config}')
-	r.init_window(config.width, config.height, config.text)
+	shell_profile := if config.shell_path == none {
+		eprintln('Error: no shell provided. Defaulting to zsh')
+		'${os.getenv('HOME')}/.zshrc'
+	} else {
+		'${config.shell_path?}'
+	}
+	println('${shell_profile}')
+	aliases := p.parse_shell_aliases(shell_profile)
+	// println('Parsed aliases: ${aliases}')
+	// Set window dimensions
+	println('config: ${config}')
+	r.init_window(config.width, config.height, 'uishell')
 	r.set_exit_key(int(r.KeyboardKey.key_escape))
 	r.set_target_fps(60)
 
-	// This variable will store the user's input
+	// storing user input
 	mut input_text := ''
 
 	for !r.window_should_close() {
@@ -46,26 +52,35 @@ fn main() {
 			}
 		}
 
-		// Process backspace key to remove the last character if pressed
 		if r.is_key_pressed(int(r.KeyboardKey.key_backspace)) {
 			if input_text.len > 0 {
 				input_text = input_text[..input_text.len - 1]
 			}
 		} else if r.is_key_pressed(int(r.KeyboardKey.key_enter)) {
-			if input_text in aliases.wait() {
-				to_execute := aliases.wait()
-				os.execute(to_execute[input_text])
-			} else {
-				os.execute(input_text)
-			}
+			if input_text in aliases {
+				// to_execute := aliases
+				println('Executing alias: ${aliases[input_text]}')
+				os.execute(aliases[input_text].trim('"'))
 
-			input_text = ''
+				r.close_window()
+				exit(0)
+			} else {
+				println('executing: ${input_text}')
+
+				spawn os.execute(input_text)
+
+				r.close_window()
+				exit(0)
+			}
+			break
+
+			// input_text = ''
 		}
 
 		// Drawing
 		r.begin_drawing()
-		r.clear_background(r.blue)
-		r.draw_text('Type something:', 10, 10, 20, r.darkgray)
+		r.clear_background(r.white)
+		r.draw_text(config.text, 10, 10, 20, r.darkgray)
 		r.draw_text(input_text, 10, 40, 20, r.black)
 		r.end_drawing()
 	}

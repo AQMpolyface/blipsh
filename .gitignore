@@ -25,3 +25,4 @@ bin/
 
 # personals
 *.conf
+*.toml
