@@ -1,6 +1,6 @@
 # uishell
 
-A lightweight, configurable shell UI (User Interface) that lets you run commands and shell aliases using a simple window instead of a terminal.  Think of it as a graphical shortcut launcher for your terminal commands.
+A lightweight, configurable shell UI (User Interface) that lets you run commands and shell aliases using a simple window instead of a terminal.  Think of it as a graphical shortcut launcher for your terminal commands. It is usefull if you have to launch a binary that you have on your PATH but dont have a .desktop that rofi can detect
 
 ## Installation
 
