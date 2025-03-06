@@ -6,11 +6,13 @@ import toml
 pub struct Config {
 pub mut:
 	// background_type BackgroundType
-	background string
-	text       string
-	width      int
-	height     int
-	shell_path ?string
+	background       string
+	text             string
+	text_color       string
+	width            int
+	height           int
+	shell_path       ?string
+	input_text_color string
 }
 
 /*
@@ -31,6 +33,8 @@ pub fn init_config(path string) !Config {
 	config_struct.background = config_content.value('background.color').default_to('black').string()
 
 	config_struct.text = config_content.value('text.content').default_to('Enter command here:').string()
+	config_struct.text_color = config_content.value('text.color').default_to('darkgrey').string()
+	config_struct.input_text_color = config_content.value('text.input_text_color').default_to('darkgrey').string()
 	shell := config_content.value('shell.shell').string()
 	config_struct.shell_path = get_shell_path(shell, home_path)
 	return config_struct

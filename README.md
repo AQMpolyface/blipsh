@@ -6,7 +6,11 @@ A lightweight, configurable shell UI (User Interface) that lets you run commands
 
 1.  You need the [V language](https://github.com/vlang/v) installed.  Follow the instructions on the V website to install it.
 2.  Download the `uishell` code (Clone this repository).
-3.  Build the project  with this (for better perf):  `v . -prod -gc none`
+3.  Build the project  with this:
+`
+v install raylib
+v . -prod -gc none
+`
 
 ## Configuration
 
@@ -92,6 +96,36 @@ shell = "bash"
 ```
 
 This will make the `uishell` window 1024 pixels wide and 768 pixels tall, set the background to white, show "Command:" above the input box, and use your `bash` aliases from your `~/.bashrc` file.
+### Supported Colors
+
+Here's the list of color supported for bpth background and text:
+
+*   `lightgray`
+*   `gray`
+*   `darkgray`
+*   `yellow`
+*   `gold`
+*   `orange`
+*   `pink`
+*   `red`
+*   `maroon`
+*   `green`
+*   `lime`
+*   `darkgreen`
+*   `skyblue`
+*   `blue`
+*   `darkblue`
+*   `purple`
+*   `violet`
+*   `darkpurple`
+*   `beige`
+*   `brown`
+*   `darkbrown`
+*   `white`
+*   `black`
+*   `blank`
+*   `magenta`
+*   `raywhite`
 
 ## Troubleshooting
 
@@ -109,7 +143,7 @@ But it didnt used aliases.
 
 - [ ] Tab (autocomplete)
 - [ ] History
-- [ ] Customizable color
+- [x] Customizable color
 - [ ] Add possibility of pic as background
 
 

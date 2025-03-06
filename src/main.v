@@ -16,11 +16,11 @@ fn main() {
 		p.init_config(config_path) or {
 			// default config on error
 			eprintln('Error parsing config: ${err}')
-			p.Config{'black', 'enter text:', 800, 600, none}
+			p.Config{'black', 'enter text:', 'darkgrey', 800, 600, none, 'darkgray'}
 		}
 	} else {
 		// default config on not found
-		p.Config{'black', 'enter text:', 800, 600, none}
+		p.Config{'black', 'enter text:', 'darkgrey', 800, 600, none, 'darkgray'}
 	}
 	shell_profile := if config.shell_path == none {
 		eprintln('Error: no shell provided. Defaulting to zsh')
@@ -29,10 +29,15 @@ fn main() {
 		'${config.shell_path?}'
 	}
 	println('${shell_profile}')
+
 	aliases := p.parse_shell_aliases(shell_profile)
 	// println('Parsed aliases: ${aliases}')
 	// Set window dimensions
 	println('config: ${config}')
+
+	text_color := get_color_from_config(config.text_color)
+	input_text_color := get_color_from_config(config.input_text_color)
+
 	r.init_window(config.width, config.height, 'uishell')
 	r.set_exit_key(int(r.KeyboardKey.key_escape))
 	r.set_target_fps(60)
@@ -80,12 +85,41 @@ fn main() {
 		// Drawing
 		r.begin_drawing()
 		r.clear_background(r.white)
-		r.draw_text(config.text, 10, 10, 20, r.darkgray)
-		r.draw_text(input_text, 10, 40, 20, r.black)
+		r.draw_text(config.text, 10, 10, 20, text_color)
+		r.draw_text(input_text, 10, 40, 20, input_text_color)
 		r.end_drawing()
 	}
 
 	r.close_window()
+}
+
+fn get_color_from_config(color string) r.Color {
+	return match color {
+		'darkgray' { r.darkgray }
+		'gray' { r.gray }
+		'lightgray' { r.lightgray }
+		'yellow' { r.yellow }
+		'gold' { r.gold }
+		'orange' { r.orange }
+		'pink' { r.pink }
+		'red' { r.red }
+		'maroon' { r.maroon }
+		'green' { r.green }
+		'lime' { r.lime }
+		'darkgreen' { r.darkgreen }
+		'skyblue' { r.skyblue }
+		'blue' { r.blue }
+		'darkblue' { r.darkblue }
+		'beige' { r.beige }
+		'brown' { r.brown }
+		'darkbrown' { r.darkbrown }
+		'white' { r.white }
+		'black' { r.black }
+		'blank' { r.blank }
+		'magenta' { r.magenta }
+		'raywhite' { r.raywhite }
+		else { r.darkgray }
+	}
 }
 
 fn get_key_from_ascii(key int) string {
