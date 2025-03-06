@@ -26,3 +26,4 @@ bin/
 # personals
 *.conf
 *.toml
+*.log

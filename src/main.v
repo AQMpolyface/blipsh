@@ -15,11 +15,12 @@ fn main() {
 	config := if os.exists(config_path) {
 		p.init_config(config_path) or {
 			// default config on error
-			eprintln('Error parsing config: ${err}')
+			println('Error parsing config: ${err}')
 			p.Config{'black', 'enter text:', 'darkgrey', 800, 600, none, 'darkgray'}
 		}
 	} else {
 		// default config on not found
+		println('Error: Config not found')
 		p.Config{'black', 'enter text:', 'darkgrey', 800, 600, none, 'darkgray'}
 	}
 	shell_profile := if config.shell_path == none {
@@ -32,12 +33,13 @@ fn main() {
 
 	aliases := p.parse_shell_aliases(shell_profile)
 	// println('Parsed aliases: ${aliases}')
-	// Set window dimensions
 	println('config: ${config}')
 
 	text_color := get_color_from_config(config.text_color)
 	input_text_color := get_color_from_config(config.input_text_color)
-
+	println('Color: ${config.background_color}')
+	background_color := get_color_from_config(config.background_color)
+	println('received COLOR:	${background_color}')
 	r.init_window(config.width, config.height, 'uishell')
 	r.set_exit_key(int(r.KeyboardKey.key_escape))
 	r.set_target_fps(60)
@@ -65,7 +67,7 @@ fn main() {
 			if input_text in aliases {
 				// to_execute := aliases
 				println('Executing alias: ${aliases[input_text]}')
-				os.execute(aliases[input_text].trim('"'))
+				spawn os.execute(aliases[input_text].trim('"'))
 
 				r.close_window()
 				exit(0)
@@ -84,7 +86,7 @@ fn main() {
 
 		// Drawing
 		r.begin_drawing()
-		r.clear_background(r.white)
+		r.clear_background(background_color)
 		r.draw_text(config.text, 10, 10, 20, text_color)
 		r.draw_text(input_text, 10, 40, 20, input_text_color)
 		r.end_drawing()
@@ -94,6 +96,7 @@ fn main() {
 }
 
 fn get_color_from_config(color string) r.Color {
+	println('received ${color}')
 	return match color {
 		'darkgray' { r.darkgray }
 		'gray' { r.gray }

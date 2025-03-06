@@ -6,7 +6,7 @@ import toml
 pub struct Config {
 pub mut:
 	// background_type BackgroundType
-	background       string
+	background_color string
 	text             string
 	text_color       string
 	width            int
@@ -30,7 +30,7 @@ pub fn init_config(path string) !Config {
 	config_struct.height = config_content.value('display.height').default_to(600).int()
 	config_struct.width = config_content.value('display.width').default_to(800).int()
 
-	config_struct.background = config_content.value('background.color').default_to('black').string()
+	config_struct.background_color = config_content.value('background.color').default_to('black').string()
 
 	config_struct.text = config_content.value('text.content').default_to('Enter command here:').string()
 	config_struct.text_color = config_content.value('text.color').default_to('darkgrey').string()

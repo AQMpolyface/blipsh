@@ -156,4 +156,4 @@ But it didnt used aliases.
 
 
 
-If you want another featur, or support for another shell, feel free to open an issue
+If you want another feature, or support for another shell, feel free to open an issue
