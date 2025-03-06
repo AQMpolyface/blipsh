@@ -109,8 +109,11 @@ But it didnt used aliases.
 
 - [ ] Tab (autocomplete)
 - [ ] History
+- [ ] Customizable color
 - [ ] Add possibility of pic as background
 
+How it looks:
 
+![Pic of uishell]](img/pic1.png)
 
 If you want another featur, or support for another shell, feel free to open an issue
