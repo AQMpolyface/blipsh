@@ -143,6 +143,7 @@ But it didnt used aliases.
 
 - [ ] Tab (autocomplete)
 - [ ] History
+- [ ] Customizable fonts
 - [x] Customizable color
 - [ ] Add possibility of pic as background
 
