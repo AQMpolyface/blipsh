@@ -35,6 +35,8 @@ color = "white"  # The background color (like "black", "white", "blue", etc.)
 
 [text]
 content = "enter text:"  # The text that appears above the input box
+color = "darkgray" # The color of the prompt text
+input_color = "darkgray" # The color of the text you type
 
 [shell]
 shell = "zsh"  # Which shell you use: "zsh", "bash", or "fish"
@@ -90,12 +92,14 @@ color = "white"
 
 [text]
 content = "Command:"
-
+color = "blue" # Prompt text in blue
+input_color = "red" # User input text in red
 [shell]
 shell = "bash"
 ```
 
 This will make the `uishell` window 1024 pixels wide and 768 pixels tall, set the background to white, show "Command:" above the input box, and use your `bash` aliases from your `~/.bashrc` file.
+
 ### Supported Colors
 
 Here's the list of color supported for bpth background and text:
@@ -141,6 +145,8 @@ But it didnt used aliases.
 
 ## Todo
 
+
+- [ ] Support for sourcing (including other file in shell config)
 - [ ] Tab (autocomplete)
 - [ ] History
 - [ ] Customizable fonts
