@@ -40,7 +40,7 @@ fn main() {
 	println('Color: ${config.background_color}')
 	background_color := get_color_from_config(config.background_color)
 	println('received COLOR:	${background_color}')
-	r.init_window(config.width, config.height, 'uishell')
+	r.init_window(config.width, config.height, 'blipsh')
 	r.set_exit_key(int(r.KeyboardKey.key_escape))
 	r.set_target_fps(60)
 

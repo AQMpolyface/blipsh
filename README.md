@@ -5,7 +5,7 @@ A lightweight, configurable shell UI (User Interface) that lets you run commands
 ## Installation
 
 1.  You need the [V language](https://github.com/vlang/v) installed.  Follow the instructions on the V website to install it.
-2.  Download the `uishell` code (Clone this repository).
+2.  Download the `blipsh` code (Clone this repository).
 3.  Download [Raylib](https://github.com/raysan5/raylib)
 4.  Build the project  with this:
 `
@@ -17,7 +17,7 @@ v . -prod -gc none
 
 `blipsh` uses a TOML file for its settings.  TOML files are like simple text-based configuration files.  The program looks for this file in these places:
 
-1.  `~/.config/uishell/blipsh.toml` (This is the best place to put it).
+1.  `~/.config/blipsh/blipsh.toml` (This is the best place to put it).
 2.  `./blipsh.toml` (This means the same directory as the `blipsh` program).
 
 If it can't find a configuration file, it uses some built-in default settings.
