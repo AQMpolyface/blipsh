@@ -1,4 +1,4 @@
-# uishell
+# blipsh
 
 A lightweight, configurable shell UI (User Interface) that lets you run commands and shell aliases using a simple window instead of a terminal.  Think of it as a graphical shortcut launcher for your terminal commands. It is usefull if you have to launch a binary that you have on your PATH but dont have a .desktop that rofi can detect
 
@@ -15,16 +15,16 @@ v . -prod -gc none
 
 ## Configuration
 
-`uishell` uses a TOML file for its settings.  TOML files are like simple text-based configuration files.  The program looks for this file in these places:
+`blipsh` uses a TOML file for its settings.  TOML files are like simple text-based configuration files.  The program looks for this file in these places:
 
-1.  `~/.config/uishell/uish.toml` (This is the best place to put it).
-2.  `./uish.toml` (This means the same directory as the `uishell` program).
+1.  `~/.config/uishell/blipsh.toml` (This is the best place to put it).
+2.  `./blipsh.toml` (This means the same directory as the `blipsh` program).
 
 If it can't find a configuration file, it uses some built-in default settings.
 
 ### Configuration Options
 
-Here's what you can put in your `uish.toml` file. Those are the default settings:
+Here's what you can put in your `blipsh.toml` file. Those are the default settings:
 
 ```toml
 [display]
@@ -45,9 +45,9 @@ shell = "zsh"  # Which shell you use: "zsh", "bash", or "fish"
 
 ### Shell Configuration (Aliases)
 
-`uishell` can automatically use your shell aliases!  It figures out where your aliases are stored based on the `shell` setting in your `uish.toml` file:
+`blipsh` can automatically use your shell aliases!  It figures out where your aliases are stored based on the `shell` setting in your `blipsh.toml` file:
 
-**IMPORTANT:**  `uishell` *only* reads lines that start with the word `alias`.
+**IMPORTANT:**  `blipsh` *only* reads lines that start with the word `alias`.
 
 *   **It will understand this:**
     ```
@@ -56,7 +56,7 @@ shell = "zsh"  # Which shell you use: "zsh", "bash", or "fish"
 
 *   **It will NOT understand this:**
     ```
-    alias aa="long aa command" &&  alias aanumber2="long aa command number 2"
+    alias aa="long aa command" &&  alias aa2="long aa command number 2"
     alias \
     aa="long aa command"
     ```
@@ -68,20 +68,21 @@ Here's where it looks for aliases for each shell:
 *   `bash`: Looks in `~/.bashrc`
 *   `fish`: Looks in `~/.config/fish/config.fish`
 
-If you don't specify a shell, `uishell` assumes you're using `zsh`.
+If you don't specify a shell, `blipsh` assumes you're using `zsh`.
 
 ## Usage
 
-1.  Run `uishell`.
+1.  Run `blipsh`.
 2.  You'll see a window with a text input box.
 3.  Type a command or one of your aliases into the box.
-4.  Press `Enter` to run the command.
-5.  Press `Escape` to close `uishell`.
+4.  Press `Enter` to run the command. `blipsh` closes after you hit enter, but continues executing the comand in the background
+
+Press `Escape` to close `blipsh` if you dont wanna execute anything.
 
 
 ## Example Configuration
 
-Here's an example of a complete `uish.toml` file:
+Here's an example of a complete `blipsh.toml` file:
 
 ```toml
 [display]
@@ -99,7 +100,7 @@ input_color = "red" # User input text in red
 shell = "bash"
 ```
 
-This will make the `uishell` window 1024 pixels wide and 768 pixels tall, set the background to white, show "Command:" above the input box, and use your `bash` aliases from your `~/.bashrc` file.
+This will make the `blipsh` window 1024 pixels wide and 768 pixels tall, set the background to white, show "Command:" above the input box, and use your `bash` aliases from your `~/.bashrc` file.
 
 ### Supported Colors
 
@@ -134,7 +135,7 @@ Here's the list of color supported for bpth background and text:
 
 ## Troubleshooting
 
-*   If `uishell` can't read your `uish.toml` file, it will show an error message in the terminal and use its default settings.
+*   If `blipsh` can't read your `blipsh.toml` file, it will show an error message in the terminal and use its default settings.
 *   If you don't tell it which shell to use, it will assume `zsh`.
 *   Make sure your shell configuration file (like `.bashrc` or `.zshrc`) exists and that your aliases are written correctly (starting with the word `alias`).
 
