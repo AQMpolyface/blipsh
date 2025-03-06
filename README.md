@@ -6,7 +6,8 @@ A lightweight, configurable shell UI (User Interface) that lets you run commands
 
 1.  You need the [V language](https://github.com/vlang/v) installed.  Follow the instructions on the V website to install it.
 2.  Download the `uishell` code (Clone this repository).
-3.  Build the project  with this:
+3.  Download [Raylib](https://github.com/raysan5/raylib)
+4.  Build the project  with this:
 `
 v install raylib
 v . -prod -gc none
