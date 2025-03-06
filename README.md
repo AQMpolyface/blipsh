@@ -6,7 +6,7 @@ A lightweight, configurable shell UI (User Interface) that lets you run commands
 
 1.  You need the [V language](https://github.com/vlang/v) installed.  Follow the instructions on the V website to install it.
 2.  Download the `uishell` code (Clone this repository).
-3.  Build the project  with this (for better perf):  `v . -prod -gc non``
+3.  Build the project  with this (for better perf):  `v . -prod -gc none`
 
 ## Configuration
 
@@ -112,8 +112,6 @@ But it didnt used aliases.
 - [ ] Customizable color
 - [ ] Add possibility of pic as background
 
-How it looks:
 
-![Pic of uishell]](img/pic1.png)
 
 If you want another featur, or support for another shell, feel free to open an issue
