@@ -5,10 +5,10 @@ import raylib as r
 import os
 import parser as p
 
-const config_path = if os.exists('${os.getenv('HOME')}/.config/uishell/uish.toml') {
-	'${os.getenv('HOME')}/.config/uishell/uish.toml'
+const config_path = if os.exists('${os.getenv('HOME')}/.config/blipsh/blipsh.toml') {
+	'${os.getenv('HOME')}/.config/blipsh/blipsh.toml'
 } else {
-	'./uish.toml'
+	'./blipsh.toml'
 }
 
 fn main() {
