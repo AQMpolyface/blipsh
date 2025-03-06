@@ -65,23 +65,17 @@ fn main() {
 			}
 		} else if r.is_key_pressed(int(r.KeyboardKey.key_enter)) {
 			if input_text in aliases {
-				// to_execute := aliases
 				println('Executing alias: ${aliases[input_text]}')
-				spawn os.execute(aliases[input_text].trim('"'))
 
-				r.close_window()
-				exit(0)
+				spawn os.execute(aliases[input_text].trim('"'))
 			} else {
 				println('executing: ${input_text}')
 
 				spawn os.execute(input_text)
-
-				r.close_window()
-				exit(0)
 			}
+			r.close_window()
+			exit(0)
 			break
-
-			// input_text = ''
 		}
 
 		// Drawing

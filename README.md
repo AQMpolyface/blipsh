@@ -148,12 +148,15 @@ But it didnt used aliases.
 
 
 - [ ] Support for sourcing (including other file in shell config)
+- [x] Parse aliases
+- [ ] Parse function
 - [ ] Tab (autocomplete)
 - [ ] History
 - [ ] Customizable fonts
-- [x] Customizable color
-- [ ] Add possibility of pic as background
+- [x] Customizable colors
+- [ ] Add possibility of using a pic as background
 
 
+If you want another feature, or support for another shell, feel free to open an issue.
 
-If you want another feature, or support for another shell, feel free to open an issue
+If you have a better name for this im all ears
