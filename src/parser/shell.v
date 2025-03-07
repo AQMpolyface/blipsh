@@ -16,32 +16,36 @@ pub fn parse_shell_aliases_and_function(path string) (map[string]string, map[str
 			i++
 			continue
 		} else if line.starts_with('alias') {
-			alias_name, alias_command := line.split_once('=') or { 
+			alias_name, alias_command := line.split_once('=') or {
 				i++
 				continue
 			}
 			alias_map[alias_name['alias '.len..]] = alias_command
 			i++
+		} else if line.starts_with('source') {
+			n_alias_map, n_function_map := parse_shell_aliases_and_function(line['source '.len..])
+			alias_map, function_map = merge_maps(alias_map, function_map, n_alias_map,
+				n_function_map)
 		} else if line.contains('()') && line.contains('{') {
 			// This is likely the start of a function
 			// Extract the function name (everything before '()')
 			func_name := line.split('(')[0].trim_space()
-			
+
 			// Start collecting function body
 			mut function_body := []string{}
 			mut braces_count := 1 // Already encountered one opening brace
-			
+
 			// If there's content after the opening brace on the same line
 			if line.index_after('{', 0) < line.len - 1 {
 				function_body << line[line.index_after('{', 0) + 1..].trim_space()
 			}
-			
+
 			i++ // Move to the next line
-			
+
 			// Continue until we find the matching closing brace
 			for i < lines.len && braces_count > 0 {
 				current := lines[i].trim_space()
-				
+
 				if current.contains('{') {
 					braces_count++
 				}
@@ -52,11 +56,11 @@ pub fn parse_shell_aliases_and_function(path string) (map[string]string, map[str
 						break
 					}
 				}
-				
+
 				function_body << current
 				i++
 			}
-			
+
 			// Store the function in the map
 			function_map[func_name] = function_body
 			i++ // Move past the closing brace
@@ -66,4 +70,37 @@ pub fn parse_shell_aliases_and_function(path string) (map[string]string, map[str
 	}
 
 	return alias_map, function_map
+}
+
+fn merge_maps(ali_map map[string]string, func_map map[string][]string, new_ali_map map[string]string, new_func_map map[string][]string) (map[string]string, map[string][]string) {
+	mut return_alias_map := map[string]string{}
+	mut return_function_map := map[string][]string{}
+
+	// Handle alias maps
+	for key, val in ali_map {
+		if key in new_ali_map {
+			continue
+		} else {
+			return_alias_map[key] = val
+		}
+	}
+
+	for key, val in new_ali_map {
+		return_alias_map[key] = val
+	}
+
+	// Handle function maps
+	for key, val in func_map {
+		if key in new_func_map {
+			continue
+		} else {
+			return_function_map[key] = val
+		}
+	}
+
+	for key, val in new_func_map {
+		return_function_map[key] = val
+	}
+
+	return return_alias_map, return_function_map
 }

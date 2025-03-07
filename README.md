@@ -147,11 +147,12 @@ But it didnt used aliases.
 ## Todo
 
 
-- [ ] Support for sourcing (including other file in shell config)
+- [x] Support for sourcing (including other file in shell config)
 - [x] Parse aliases
 - [x] Parse function
 - [ ] Tab (autocomplete)
 - [ ] History
+- [ ] support for setting cutsom sourcing, aliasing and function in the toml config
 - [ ] Customizable fonts
 - [x] Customizable colors
 - [ ] Add possibility of using a pic as background
