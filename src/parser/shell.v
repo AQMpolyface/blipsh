@@ -1,6 +1,7 @@
 module parser
 
 import os
+import log
 
 pub fn parse_shell_aliases_and_function(path string) (map[string]string, map[string][]string) {
 	lines := os.read_lines(path) or { panic('Error reading ${path}: ${err}') }
@@ -8,7 +9,6 @@ pub fn parse_shell_aliases_and_function(path string) (map[string]string, map[str
 	mut alias_map := map[string]string{}
 	mut function_map := map[string][]string{}
 
-	// println('lines: ${lines}')
 	mut i := 0
 	for i < lines.len {
 		line := lines[i].trim_space()
@@ -23,9 +23,21 @@ pub fn parse_shell_aliases_and_function(path string) (map[string]string, map[str
 			alias_map[alias_name['alias '.len..]] = alias_command
 			i++
 		} else if line.starts_with('source') {
-			n_alias_map, n_function_map := parse_shell_aliases_and_function(line['source '.len..])
-			alias_map, function_map = merge_maps(alias_map, function_map, n_alias_map,
-				n_function_map)
+			source_path := line['source '.len..]
+			// if contain $ assume there is an env var in the path
+			if source_path.contains('$') {
+				source_path_after_parsing_env := parse_env(source_path)
+				log.info('Sourcing file with env vars: ${source_path} -> ${source_path_after_parsing_env}')
+				n_alias_map, n_function_map := parse_shell_aliases_and_function(source_path_after_parsing_env)
+				alias_map, function_map = merge_maps(alias_map, function_map, n_alias_map,
+					n_function_map)
+			} else {
+				log.info('Sourcing file: ${source_path}')
+				n_alias_map, n_function_map := parse_shell_aliases_and_function(source_path)
+				alias_map, function_map = merge_maps(alias_map, function_map, n_alias_map,
+					n_function_map)
+			}
+			i++
 		} else if line.contains('()') && line.contains('{') {
 			// This is likely the start of a function
 			// Extract the function name (everything before '()')
@@ -103,4 +115,41 @@ fn merge_maps(ali_map map[string]string, func_map map[string][]string, new_ali_m
 	}
 
 	return return_alias_map, return_function_map
+}
+
+pub fn parse_env(path string) string {
+	mut result := path
+	// Match patterns like ${VAR} or $VAR
+	for i := 0; i < result.len; {
+		if result[i] == `$` {
+			if i + 1 < result.len && result[i + 1] == `{` {
+				// Handle ${VAR} format
+				end_idx := result.index_after('}', i + 2)
+				if end_idx > i + 2 {
+					var_name := result[i + 2..end_idx]
+					env_value := os.getenv(var_name)
+					result = result.replace(var_name, env_value)
+					i = i // Stay at same position as string length changed
+					continue
+				}
+			} else {
+				// Handle $VAR format
+				mut end_idx := i + 1
+				for end_idx < result.len && (result[end_idx].is_letter()
+					|| result[end_idx] == `_` || (end_idx > i + 1 && result[end_idx].is_digit())) {
+					end_idx++
+				}
+				if end_idx > i + 1 {
+					var_name := result[i + 1..end_idx]
+					env_value := os.getenv(var_name)
+					result = result.replace('$' + var_name, env_value)
+					i = i // Stay at same position as string length changed
+					continue
+				}
+			}
+		}
+		i++
+	}
+
+	return result
 }
