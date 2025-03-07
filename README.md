@@ -63,7 +63,7 @@ shell = "zsh"  # Which shell you use: "zsh", "bash", or "fish"
 
 Here's where it looks for aliases for each shell:
 
-*   `zsh`:  Looks in `~/.zshrc` (The `~` means your home directory)
+*   `zsh`:  Looks in `~/.zshrc`
 *   `bash`: Looks in `~/.bashrc`
 *   `fish`: Looks in `~/.config/fish/config.fish`
 
