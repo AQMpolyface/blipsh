@@ -63,11 +63,17 @@ shell = "zsh"  # Which shell you use: "zsh", "bash", or "fish"
 
 Here's where it looks for aliases for each shell:
 
-*   `zsh`:  Looks in `~/.zshrc` (The `~` means your home directory)
+*   `zsh`:  Looks in `~/.zshrc`
 *   `bash`: Looks in `~/.bashrc`
 *   `fish`: Looks in `~/.config/fish/config.fish`
 
 If you don't specify a shell, `blipsh` assumes you're using `zsh`.
+
+You can set a custom path in the config  if you dont wanna use a shell config
+```toml
+[shell]
+path = "/path/to/custom/file"
+```
 
 ## Usage
 
@@ -97,6 +103,7 @@ color = "blue" # Prompt text in blue
 input_color = "red" # User input text in red
 [shell]
 shell = "bash"
+path = "/home/me/custom_file" # will overide the bash profile
 ```
 
 This will make the `blipsh` window 1024 pixels wide and 768 pixels tall, set the background to white, show "Command:" above the input box, and use your `bash` aliases from your `~/.bashrc` file.

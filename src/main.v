@@ -41,7 +41,7 @@ fn main() {
 	text_color := get_color_from_config(config.text_color)
 	input_text_color := get_color_from_config(config.input_text_color)
 	// println('Color: ${config.background_color}')
-	background_color := get_color_from_config(config.background_color)
+	// background_color := get_color_from_config(config.background_color)
 	// println('received COLOR:	${background_color}')
 	r.init_window(config.width, config.height, 'blipsh')
 	r.set_exit_key(int(r.KeyboardKey.key_escape))
@@ -73,6 +73,7 @@ fn main() {
 				spawn os.execute(aliases[input_text].trim('"'))
 			} else if input_text in function {
 				exec := function[input_text].join(' && ')
+
 				spawn os.execute(exec)
 			} else {
 				println('executing: ${input_text}')
@@ -86,7 +87,7 @@ fn main() {
 
 		// Drawing
 		r.begin_drawing()
-		r.clear_background(background_color)
+		r.clear_background(r.blank)
 		r.draw_text(config.text, 10, 10, 20, text_color)
 		r.draw_text(input_text, 10, 40, 20, input_text_color)
 		r.end_drawing()
@@ -96,7 +97,7 @@ fn main() {
 }
 
 fn get_color_from_config(color string) r.Color {
-	println('received ${color}')
+	// println('received ${color}')
 	return match color {
 		'darkgray' { r.darkgray }
 		'gray' { r.gray }
