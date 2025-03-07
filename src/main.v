@@ -73,6 +73,7 @@ fn main() {
 				spawn os.execute(aliases[input_text].trim('"'))
 			} else if input_text in function {
 				exec := function[input_text].join(' && ')
+
 				spawn os.execute(exec)
 			} else {
 				println('executing: ${input_text}')

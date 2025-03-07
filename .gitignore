@@ -27,3 +27,5 @@ bin/
 *.conf
 *.toml
 *.log
+# stupid v-analyzer dumbs binaries here idk why
+v_analyzer_*

@@ -37,7 +37,13 @@ pub fn init_config(path string) !Config {
 	config_struct.input_text_color = config_content.value('text.input_text_color').default_to('darkgrey').string()
 
 	shell := config_content.value('shell.name').string()
-	config_struct.shell_path = get_shell_path(shell, home_path)
+	shell_path := config_content.value('shell.path').default_to('n').string()
+
+	if shell_path != 'n' {
+		config_struct.shell_path = get_shell_path(shell, home_path)
+	} else {
+		config_struct.shell_path = shell_path
+	}
 	return config_struct
 }
 
