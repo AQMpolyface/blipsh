@@ -29,17 +29,20 @@ fn main() {
 	} else {
 		'${config.shell_path?}'
 	}
-	println('${shell_profile}')
+	// println('${shell_profile}')
 
-	aliases := p.parse_shell_aliases(shell_profile)
+	aliases, function := p.parse_shell_aliases_and_function(shell_profile)
 	// println('Parsed aliases: ${aliases}')
-	println('config: ${config}')
+	//	println('config: ${config}')
 
+	println('function_ ${function}')
+	// println('aliases: ${aliases}')
+	// println('config: ${config}')
 	text_color := get_color_from_config(config.text_color)
 	input_text_color := get_color_from_config(config.input_text_color)
-	println('Color: ${config.background_color}')
+	// println('Color: ${config.background_color}')
 	background_color := get_color_from_config(config.background_color)
-	println('received COLOR:	${background_color}')
+	// println('received COLOR:	${background_color}')
 	r.init_window(config.width, config.height, 'blipsh')
 	r.set_exit_key(int(r.KeyboardKey.key_escape))
 	r.set_target_fps(60)
@@ -68,6 +71,9 @@ fn main() {
 				println('Executing alias: ${aliases[input_text]}')
 
 				spawn os.execute(aliases[input_text].trim('"'))
+			} else if input_text in function {
+				exec := function[input_text].join(' && ')
+				spawn os.execute(exec)
 			} else {
 				println('executing: ${input_text}')
 
