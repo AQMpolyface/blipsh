@@ -35,6 +35,7 @@ pub fn init_config(path string) !Config {
 	config_struct.text = config_content.value('text.content').default_to('Enter command here:').string()
 	config_struct.text_color = config_content.value('text.color').default_to('darkgrey').string()
 	config_struct.input_text_color = config_content.value('text.input_text_color').default_to('darkgrey').string()
+
 	shell := config_content.value('shell.name').string()
 	config_struct.shell_path = get_shell_path(shell, home_path)
 	return config_struct
