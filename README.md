@@ -149,7 +149,7 @@ But it didnt used aliases.
 
 - [ ] Support for sourcing (including other file in shell config)
 - [x] Parse aliases
-- [ ] Parse function
+- [x] Parse function
 - [ ] Tab (autocomplete)
 - [ ] History
 - [ ] Customizable fonts
