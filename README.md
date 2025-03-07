@@ -9,8 +9,7 @@ A lightweight, configurable shell UI (User Interface) that lets you run commands
 3.  Download [Raylib](https://github.com/raysan5/raylib)
 4.  Build the project  with this:
 `
-v install raylib
-v . -prod -gc none
+v install raylib && v . -prod -gc none
 `
 
 ## Configuration
