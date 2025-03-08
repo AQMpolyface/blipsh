@@ -5,7 +5,10 @@ import log
 import utils
 
 pub fn parse_shell_aliases_and_function(path string) (map[string]string, map[string][]string) {
-	lines := os.read_lines(path) or { panic('Error reading ${path}: ${err}') }
+	// lines := os.read_lines(path) or { panic('Error reading ${path}: ${err}') }
+	// dont panic, retunr nothing on error$
+	eprintln('received path ${path}')
+	lines := os.read_lines(path) or { return map[string]string{}, map[string][]string{} }
 
 	mut alias_map := map[string]string{}
 	mut function_map := map[string][]string{}

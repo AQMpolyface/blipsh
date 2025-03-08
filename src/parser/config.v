@@ -11,7 +11,7 @@ pub mut:
 	text_color       string
 	width            int
 	height           int
-	shell_path       ?string
+	shell_path       string
 	input_text_color string
 }
 
@@ -37,7 +37,7 @@ pub fn init_config(path string) !Config {
 	config_struct.input_text_color = config_content.value('text.input_text_color').default_to('darkgrey').string()
 
 	shell := config_content.value('shell.name').string()
-	shell_path := config_content.value('shell.path').default_to('n').string()
+	shell_path := config_content.value('shell.path').default_to('${home_path}/.zshrc').string()
 
 	if shell_path != 'n' {
 		config_struct.shell_path = get_shell_path(shell, home_path)

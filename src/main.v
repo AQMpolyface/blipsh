@@ -16,26 +16,26 @@ fn main() {
 		p.init_config(config_path) or {
 			// default config on error
 			println('Error parsing config: ${err}')
-			p.Config{'black', 'enter text:', 'darkgrey', 800, 600, none, 'darkgray'}
+			p.Config{'black', 'enter text:', 'darkgrey', 800, 600, '', 'darkgray'}
 		}
 	} else {
 		// default config on not found
 		println('Error: Config not found')
-		p.Config{'black', 'enter text:', 'darkgrey', 800, 600, none, 'darkgray'}
+		p.Config{'black', 'enter text:', 'darkgrey', 800, 600, '', 'darkgray'}
 	}
-	shell_profile := if config.shell_path == none {
+	shell_profile := if config.shell_path == '' {
 		eprintln('Error: no shell provided. Defaulting to zsh')
 		'${os.getenv('HOME')}/.zshrc'
 	} else {
-		'${config.shell_path?}'
+		'${config.shell_path}'
 	}
 	// println('${shell_profile}')
 
-	aliases, function := p.parse_shell_aliases_and_function(shell_profile)
+	threads_alias := go p.parse_shell_aliases_and_function(shell_profile)
 	// println('Parsed aliases: ${aliases}')
 	//	println('config: ${config}')
 
-	println('function_ ${function}')
+	// println('function_ ${function}')
 	// println('aliases: ${aliases}')
 	// println('config: ${config}')
 	text_color := get_color_from_config(config.text_color)
@@ -67,12 +67,13 @@ fn main() {
 				input_text = input_text[..input_text.len - 1]
 			}
 		} else if r.is_key_pressed(int(r.KeyboardKey.key_enter)) {
+			aliases, functions := threads_alias.wait()
 			if input_text in aliases {
 				println('Executing alias: ${aliases[input_text]}')
 
 				spawn os.execute(aliases[input_text].trim('"'))
-			} else if input_text in function {
-				exec := function[input_text].join(' && ')
+			} else if input_text in functions {
+				exec := functions[input_text].join(' && ')
 
 				spawn os.execute(exec)
 			} else {
@@ -97,7 +98,7 @@ fn main() {
 }
 
 fn get_color_from_config(color string) r.Color {
-	// println('received ${color}')
+	println('received ${color}')
 	return match color {
 		'darkgray' { r.darkgray }
 		'gray' { r.gray }
