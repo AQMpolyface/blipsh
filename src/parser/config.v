@@ -13,6 +13,7 @@ pub mut:
 	height           int
 	shell_path       string
 	input_text_color string
+	font             string
 }
 
 /*
@@ -35,7 +36,9 @@ pub fn init_config(path string) !Config {
 	config_struct.text = config_content.value('text.content').default_to('Enter command here:').string()
 	config_struct.text_color = config_content.value('text.color').default_to('darkgrey').string()
 	config_struct.input_text_color = config_content.value('text.input_text_color').default_to('darkgrey').string()
+	config_struct.font = config_content.value('text.font').default_to('').string()
 
+	// TODO fix custom path
 	shell := config_content.value('shell.name').string()
 	shell_path := config_content.value('shell.path').default_to('${home_path}/.zshrc').string()
 

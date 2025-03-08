@@ -16,12 +16,12 @@ fn main() {
 		p.init_config(config_path) or {
 			// default config on error
 			println('Error parsing config: ${err}')
-			p.Config{'black', 'enter text:', 'darkgrey', 800, 600, '', 'darkgray'}
+			p.Config{'black', 'enter text:', 'darkgrey', 800, 600, '', 'darkgray', ''}
 		}
 	} else {
 		// default config on not found
 		println('Error: Config not found')
-		p.Config{'black', 'enter text:', 'darkgrey', 800, 600, '', 'darkgray'}
+		p.Config{'black', 'enter text:', 'darkgrey', 800, 600, '', 'darkgray', ''}
 	}
 	shell_profile := if config.shell_path == '' {
 		eprintln('Error: no shell provided. Defaulting to zsh')
@@ -40,6 +40,14 @@ fn main() {
 	// println('config: ${config}')
 	text_color := get_color_from_config(config.text_color)
 	input_text_color := get_color_from_config(config.input_text_color)
+	font := r.load_font(config.font)
+	if font.texture.id == 0 {
+		println('Failed to load font: ${config.font}')
+		// Use default font as fallback
+	} else {
+		println('Font successfully loaded: ${config.font}')
+	}
+	// println('Font base size: ${font}, texture ID: ')
 	// println('Color: ${config.background_color}')
 	// background_color := get_color_from_config(config.background_color)
 	// println('received COLOR:	${background_color}')
@@ -89,8 +97,12 @@ fn main() {
 		// Drawing
 		r.begin_drawing()
 		r.clear_background(r.blank)
+		r.draw_text_ex(font, config.text, r.Vector2{10, 10}, 20, 2, text_color)
+		r.draw_text_ex(font, input_text, r.Vector2{10, 40}, 20, 2, input_text_color)
+		/*
 		r.draw_text(config.text, 10, 10, 20, text_color)
 		r.draw_text(input_text, 10, 40, 20, input_text_color)
+		*/
 		r.end_drawing()
 	}
 
